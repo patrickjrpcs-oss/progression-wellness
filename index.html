@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#17261f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Progression" />
+  <title>Progression Wellness V1</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Progression Wellness</p>
+        <h1>Checking in with John</h1>
+      </div>
+      <button id="installButton" class="ghost hidden" type="button">Install</button>
+    </header>
+
+    <main>
+      <section class="coach-card">
+        <div class="coach-avatar">J</div>
+        <div>
+          <p class="coach-name">John</p>
+          <p id="coachPrompt" class="coach-prompt">Ready when you are. Tell me how today is going.</p>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="Progression sections">
+        <button class="tab active" data-view="chat" type="button">Chat</button>
+        <button class="tab" data-view="daily" type="button">Daily Log</button>
+        <button class="tab" data-view="timeline" type="button">Timeline</button>
+        <button class="tab" data-view="playbook" type="button">Playbook</button>
+        <button class="tab" data-view="data" type="button">Data</button>
+      </nav>
+
+      <section id="chat" class="view active">
+        <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+        <form id="chatForm" class="composer">
+          <textarea id="chatInput" rows="2" placeholder="Text John..." required></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </section>
+
+      <section id="daily" class="view">
+        <form id="dailyForm" class="card form-grid">
+          <label>Energy
+            <input id="energy" type="range" min="1" max="10" value="5" />
+          </label>
+          <label>Mood
+            <input id="mood" type="range" min="1" max="10" value="5" />
+          </label>
+          <label>Sleep hours
+            <input id="sleep" type="number" min="0" max="24" step="0.25" placeholder="7" />
+          </label>
+          <label>Water
+            <input id="water" type="number" min="0" step="1" placeholder="cups" />
+          </label>
+          <label>Movement
+            <input id="movement" type="text" placeholder="walk, gym, stretching..." />
+          </label>
+          <label>Food note
+            <textarea id="food" rows="2" placeholder="What did you eat or notice?"></textarea>
+          </label>
+          <label>Win of the day
+            <textarea id="win" rows="2" placeholder="Small wins count."></textarea>
+          </label>
+          <label>Hard thing
+            <textarea id="hardThing" rows="2" placeholder="What made today harder?"></textarea>
+          </label>
+          <button type="submit">Save Daily Log</button>
+        </form>
+      </section>
+
+      <section id="timeline" class="view">
+        <div class="section-head">
+          <h2>Your Timeline</h2>
+          <button id="addTimelineNote" class="ghost" type="button">Add Note</button>
+        </div>
+        <div id="timelineList" class="timeline-list"></div>
+      </section>
+
+      <section id="playbook" class="view">
+        <div class="card">
+          <h2>V1 Playbook</h2>
+          <p>This is the simple plan John can keep bringing you back to.</p>
+          <div id="playbookItems" class="playbook-items"></div>
+          <form id="playbookForm" class="inline-form">
+            <input id="playbookInput" type="text" placeholder="Add a next-step rule..." required />
+            <button type="submit">Add</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="data" class="view">
+        <div class="card data-actions">
+          <h2>Local Data</h2>
+          <p>Everything saves on this device using IndexedDB. Export JSON from your phone and import it on your PC.</p>
+          <button id="exportButton" type="button">Export Data</button>
+          <label class="file-button">Import Data
+            <input id="importInput" type="file" accept="application/json,.json" />
+          </label>
+          <button id="clearButton" class="danger" type="button">Clear Local Data</button>
+          <pre id="dataStatus">Ready.</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
