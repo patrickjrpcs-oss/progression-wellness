@@ -1,4 +1,4 @@
-const CACHE_NAME = 'progression-v1-cache-1';
+const CACHE_NAME = 'progression-wellness-v2-cache-1';
 const ASSETS = [
   './',
   './index.html',

@@ -1,29 +1,29 @@
 # Progression Wellness V1 PWA
 
-This is a local-first Version 1 PWA prototype.
+This is a local-first Progression Wellness prototype rebuilt around the real V1 standard:
 
-## What it includes
+> The app should feel like texting John, with tools quietly behind the conversation.
 
-- Installable PWA shell
-- Phone-friendly layout
-- Local IndexedDB storage
-- Export Data button
-- Import Data button
-- One coach chat with John
-- Daily log
-- Timeline
-- Playbook
-- Offline service worker cache
+## What changed
+
+- Chat is now the home screen.
+- Daily Log, Timeline, Playbook, and Data are hidden in a side panel.
+- John uses a small local companion engine instead of only hardcoded keyword replies.
+- Natural messages quietly update the daily log.
+- Timeline entries are created from conversation.
+- Playbook cards can be learned from conversation.
+- Local data is stored in IndexedDB.
+- Export/import JSON supports phone-to-PC testing.
 
 ## Run from your PC
 
-From this folder, run a simple local server:
+From this folder:
 
 ```powershell
 py -3.11 -m http.server 8080
 ```
 
-Then open:
+Open on PC:
 
 ```text
 http://localhost:8080
@@ -31,38 +31,36 @@ http://localhost:8080
 
 ## Open from your phone on the same Wi-Fi
 
-On your PC, find your local IP address:
+Find your PC IPv4 address:
 
 ```powershell
 ipconfig
 ```
 
-Look for your IPv4 address, then open this on your phone:
+Then open this on your phone:
 
 ```text
 http://YOUR-PC-IP:8080
 ```
 
-Example:
+Use Add to Home Screen from the phone browser.
 
-```text
-http://192.168.1.25:8080
-```
-
-Then use Add to Home Screen from your phone browser.
-
-## Transfer phone data back to PC
+## Transfer data from phone to PC
 
 On phone:
 
 1. Open Progression.
-2. Go to Data.
-3. Tap Export Data.
-4. Send the JSON file to your PC.
+2. Tap the menu.
+3. Open Data.
+4. Export JSON.
 
 On PC:
 
 1. Open the app.
-2. Go to Data.
-3. Tap Import Data.
-4. Choose the exported JSON file.
+2. Tap the menu.
+3. Open Data.
+4. Import JSON.
+
+## Important V1 limitation
+
+This is still local-only and rule-based. It does not call a real AI backend yet. The local John engine exists so we can test the feeling of the product before wiring in a live model.

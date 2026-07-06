@@ -1,7 +1,15 @@
 const ProgressionDB = (() => {
-  const DB_NAME = 'progression-v1';
+  const DB_NAME = 'progression-wellness-v2';
   const DB_VERSION = 1;
-  const STORES = ['messages', 'dailyLogs', 'timeline', 'playbook', 'meta'];
+  const STORES = [
+    'messages',
+    'dailyLogs',
+    'timeline',
+    'playbook',
+    'memories',
+    'habits',
+    'meta'
+  ];
 
   function openDB() {
     return new Promise((resolve, reject) => {
@@ -9,11 +17,16 @@ const ProgressionDB = (() => {
       request.onupgradeneeded = () => {
         const db = request.result;
         for (const store of STORES) {
-          if (!db.objectStoreNames.contains(store)) {
-            db.createObjectStore(store, { keyPath: 'id' });
-          }
+          if (!db.objectStoreNames.contains(store)) db.createObjectStore(store, { keyPath: 'id' });
         }
       };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  function requestToPromise(request) {
+    return new Promise((resolve, reject) => {
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
@@ -31,16 +44,18 @@ const ProgressionDB = (() => {
     }).finally(() => db.close());
   }
 
-  function requestToPromise(request) {
-    return new Promise((resolve, reject) => {
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
-  }
-
   async function put(storeName, value) {
     await tx(storeName, 'readwrite', store => store.put(value));
     return value;
+  }
+
+  async function get(storeName, id) {
+    const db = await openDB();
+    try {
+      return await requestToPromise(db.transaction(storeName, 'readonly').objectStore(storeName).get(id));
+    } finally {
+      db.close();
+    }
   }
 
   async function getAll(storeName) {
@@ -61,7 +76,7 @@ const ProgressionDB = (() => {
   }
 
   async function exportAll() {
-    const data = { version: 1, exportedAt: new Date().toISOString(), stores: {} };
+    const data = { app: 'Progression Wellness', version: 2, exportedAt: new Date().toISOString(), stores: {} };
     for (const store of STORES) data.stores[store] = await getAll(store);
     return data;
   }
@@ -79,5 +94,5 @@ const ProgressionDB = (() => {
     for (const store of STORES) await clearStore(store);
   }
 
-  return { put, getAll, remove, exportAll, importAll, clearAll };
+  return { put, get, getAll, remove, exportAll, importAll, clearAll };
 })();
